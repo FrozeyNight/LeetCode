@@ -9,6 +9,8 @@ public class Main {
 
         //TreeNode root = new TreeNode(1, left, right);
 
+        // testing connection to GitHub
+
         TreeNode root = new TreeNode(1, new TreeNode(2, new TreeNode(4), null), new TreeNode(3, null, new TreeNode(5)));
 
         System.out.println(levelOrder(root));
@@ -25,7 +27,7 @@ public class Main {
         Queue<TreeNode> queue = new ArrayDeque<>();
         queue.offer(root);
 
-        TreeNode current = null;
+        TreeNode current;
 
         while(!queue.isEmpty()){
             List<Integer> holder2 = new ArrayList<>();
