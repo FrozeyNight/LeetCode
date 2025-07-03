@@ -43,17 +43,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/home/frozey/MyFiles/LeetCode-main/Binary Trees/Symmetric Tree",
-    "onboarding.tips.debug.path": "/home/frozey/MyFiles/Programming/LeetCode/Binary Trees/Symmetric Tree/src/Main.java"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/frozey/MyFiles/LeetCode-main/Binary Trees/Symmetric Tree&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;/home/frozey/MyFiles/Programming/LeetCode/Binary Trees/Symmetric Tree/src/Main.java&quot;
   }
-}]]></component>
+}</component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="37122057-21e4-4d34-9dd3-04b34fc2339e" name="Changes" comment="" />
