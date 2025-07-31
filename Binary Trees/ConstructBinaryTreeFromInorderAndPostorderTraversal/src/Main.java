@@ -14,8 +14,6 @@ public class Main {
         int[] inorder = {2, 1};
         int[] postorder = {2, 1};
 
-        // sync test
-
         System.out.println(buildTree(inorder, postorder));
     }
 
