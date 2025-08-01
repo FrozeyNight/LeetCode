@@ -5,11 +5,11 @@ public class Main {
 
     }
 
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    // TODO: 1. Handle cases where one of the subtrees is empty
+    //       2. Handle incomplete binary trees
+    private int preorderIndex = 1;
 
-        // Keep track of the index at preorder that we are at (global variable?)
-        // beginning of the split array is the parent index and the end is the end of the current array
-        // also the current method doesn't work
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
 
         TreeNode root = new TreeNode(preorder[0]);
 
@@ -19,30 +19,28 @@ public class Main {
             mappedInorder.put(inorder[i], i);
         }
 
-        int[] newPreorder = new int[preorder.length - 1];
-        System.arraycopy(preorder, 1, newPreorder, 0, preorder.length - 1);
+        if(preorder.length > 1) buildTreeHelper(root, preorder, mappedInorder, 0, inorder.length - 1);
 
-        buildTreeHelper(root, newPreorder, inorder, mappedInorder);
+        preorderIndex = 0;
 
         return root;
     }
 
-    private void buildTreeHelper(TreeNode node, int[] preorder, int[] inorder, HashMap<Integer, Integer> mappedInorder){
-        int parentInorderIndex = mappedInorder.get(node.val);
+    private void buildTreeHelper(TreeNode node, int[] preorder, HashMap<Integer, Integer> mappedInorder, int start, int end){
 
-        if(parentInorderIndex < inorder.length){
-            node.left.val = preorder[0];
+        if(start <= end && end > 0){ // the second condition could be wrong
+            node.left = new TreeNode(preorder[preorderIndex]);
+            preorderIndex++;
 
-            int leftChildInorderIndex = mappedInorder.get(node.left.val);
+            buildTreeHelper(node.left, preorder, mappedInorder, start, mappedInorder.get(node.left.val) - 1);
 
-            int[] leftInorder = new int[leftChildInorderIndex];
-            System.arraycopy(inorder, 0, leftInorder, 0, leftChildInorderIndex);
+            if(mappedInorder.get(preorder[preorderIndex]) <= end){
+                node.right = new TreeNode(preorder[preorderIndex]);
+                preorderIndex++;
 
-            int[] newPreorder = new int[preorder.length - 1];
-            System.arraycopy(preorder, 1, newPreorder, 0, leftChildInorderIndex);
-
-            buildTreeHelper(node.left, newPreorder, leftInorder, mappedInorder);
-
+                buildTreeHelper(node.right, preorder, mappedInorder, mappedInorder.get(node.right.val) + 1, end);
+            }
         }
+
     }
 }
