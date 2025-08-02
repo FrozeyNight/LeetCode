@@ -2,14 +2,18 @@ import java.util.HashMap;
 
 public class Main {
     public static void main(String[] args) {
+        //int[] preorder = new int[] {1, 2, 3};
+        //int[] inorder = new int[] {1, 2, 3};
 
+        int[] preorder = new int[] {3,9,20,15,7};
+        int[] inorder = new int[] {9,3,15,20,7};
+
+        buildTree(preorder, inorder);
     }
 
-    // TODO: 1. Handle cases where one of the subtrees is empty
-    //       2. Handle incomplete binary trees
-    private int preorderIndex = 1;
+    private static int preorderIndex = 1;
 
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
 
         TreeNode root = new TreeNode(preorder[0]);
 
@@ -26,20 +30,24 @@ public class Main {
         return root;
     }
 
-    private void buildTreeHelper(TreeNode node, int[] preorder, HashMap<Integer, Integer> mappedInorder, int start, int end){
+    private static void buildTreeHelper(TreeNode node, int[] preorder, HashMap<Integer, Integer> mappedInorder, int start, int end){
 
-        if(start <= end && end > 0){ // the second condition could be wrong
+        int leftEnd = mappedInorder.get(node.val) - 1;
+
+        if(start <= leftEnd){
             node.left = new TreeNode(preorder[preorderIndex]);
             preorderIndex++;
 
-            buildTreeHelper(node.left, preorder, mappedInorder, start, mappedInorder.get(node.left.val) - 1);
+            buildTreeHelper(node.left, preorder, mappedInorder, start, leftEnd);
+        }
 
-            if(mappedInorder.get(preorder[preorderIndex]) <= end){
-                node.right = new TreeNode(preorder[preorderIndex]);
-                preorderIndex++;
+        int rightStart = mappedInorder.get(node.val) + 1;
 
-                buildTreeHelper(node.right, preorder, mappedInorder, mappedInorder.get(node.right.val) + 1, end);
-            }
+        if(rightStart <= end){
+            node.right = new TreeNode(preorder[preorderIndex]);
+            preorderIndex++;
+
+            buildTreeHelper(node.right, preorder, mappedInorder, rightStart, end);
         }
 
     }
