@@ -3,6 +3,8 @@ public class Main {
 
     }
 
+    // TODO: Think of a fundamentally different solution that's more optimized
+
     public Node connect(Node root) {
         if(root == null) return null;
 
