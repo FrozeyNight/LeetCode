@@ -3,7 +3,7 @@ public class Main {
 
     }
 
-    // TODO: Think of a fundamentally different solution that's more optimized
+    // private int reachedLevel = 0;
 
     public Node connect(Node root) {
         if(root == null) return null;
@@ -40,4 +40,43 @@ public class Main {
         }
 
     }
+
+    /*
+    private void subtreesConnect(Node leftNode, Node rightNode, int currentLevel){
+
+        if(currentLevel > reachedLevel){
+            if(leftNode.right != null && rightNode.left != null) {
+            leftNode.right.next = rightNode.left;
+            reachedLevel++;
+            subtreesConnect(leftNode.right, rightNode.left, currentLevel + 1);
+            }
+            else if(leftNode.right != null && rightNode.right != null){
+            leftNode.right.next = rightNode.right;
+            reachedLevel++;
+            subtreesConnect(leftNode.right, rightNode.right, currentLevel + 1);
+            }
+            else if(leftNode.left != null && rightNode.left != null){
+            leftNode.left.next = rightNode.left;
+            reachedLevel++;
+            subtreesConnect(leftNode.left, rightNode.left, currentLevel + 1);
+            }
+            else if(leftNode.left != null && rightNode.right != null){
+            leftNode.left.next = rightNode.right;
+            reachedLevel++;
+            subtreesConnect(leftNode.left, rightNode.right, currentLevel + 1);
+            return;
+            }
+        }
+        if(leftNode.right != null){
+            if(rightNode.left != null) subtreesConnect(leftNode.right, rightNode.left, currentLevel + 1);
+            if(rightNode.right != null) subtreesConnect(leftNode.right, rightNode.right, currentLevel + 1);
+        }
+        if(leftNode.left != null){
+            if(rightNode.left != null) subtreesConnect(leftNode.left, rightNode.left, currentLevel + 1);
+            if(rightNode.right != null) subtreesConnect(leftNode.left, rightNode.right, currentLevel + 1);
+        }
+
+
+    }
+     */
 }
