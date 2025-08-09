@@ -46,20 +46,27 @@ public class Main {
     /*
     private void subtreesConnect(Node leftNode, Node rightNode, int currentLevel){
 
+        boolean inwards = false;
+        boolean rightRight = false;
+        boolean leftLeft = false;
+
         if(currentLevel > reachedLevel){
             if(leftNode.right != null && rightNode.left != null) {
             leftNode.right.next = rightNode.left;
             reachedLevel++;
+            inwards = true;
             subtreesConnect(leftNode.right, rightNode.left, currentLevel + 1);
             }
             else if(leftNode.right != null && rightNode.right != null){
             leftNode.right.next = rightNode.right;
             reachedLevel++;
+            rightRight = true;
             subtreesConnect(leftNode.right, rightNode.right, currentLevel + 1);
             }
             else if(leftNode.left != null && rightNode.left != null){
             leftNode.left.next = rightNode.left;
             reachedLevel++;
+            leftLeft = true;
             subtreesConnect(leftNode.left, rightNode.left, currentLevel + 1);
             }
             else if(leftNode.left != null && rightNode.right != null){
@@ -69,12 +76,13 @@ public class Main {
             return;
             }
         }
+
         if(leftNode.right != null){
-            if(rightNode.left != null) subtreesConnect(leftNode.right, rightNode.left, currentLevel + 1);
-            if(rightNode.right != null) subtreesConnect(leftNode.right, rightNode.right, currentLevel + 1);
+            if(rightNode.left != null && !inwards) subtreesConnect(leftNode.right, rightNode.left, currentLevel + 1);
+            if(rightNode.right != null && !rightRight) subtreesConnect(leftNode.right, rightNode.right, currentLevel + 1);
         }
         if(leftNode.left != null){
-            if(rightNode.left != null) subtreesConnect(leftNode.left, rightNode.left, currentLevel + 1);
+            if(rightNode.left != null && !leftLeft) subtreesConnect(leftNode.left, rightNode.left, currentLevel + 1);
             if(rightNode.right != null) subtreesConnect(leftNode.left, rightNode.right, currentLevel + 1);
         }
 
