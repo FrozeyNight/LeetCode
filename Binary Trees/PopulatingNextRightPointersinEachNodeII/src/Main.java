@@ -3,6 +3,8 @@ public class Main {
 
     }
 
+    // Both solutions are slow and inefficient
+
     // private int reachedLevel = 0;
 
     public Node connect(Node root) {
