@@ -5,6 +5,30 @@ public class Main {
 
     public Node connect(Node root) {
         if(root == null) return null;
+
+        Node current = root;
+        Node next;
+        Node previous = null;
+
+        while(current.left != null){
+            next = current.left;
+            while(current != null){
+                if(previous != null) previous.right.next = current.left;
+                current.left.next = current.right;
+                previous = current;
+                current = current.next;
+            }
+            previous = null;
+            current = next;
+        }
+
+        return root;
+    }
+
+    /*
+
+    public Node connect(Node root) {
+        if(root == null) return null;
         if(root.left != null) {
             connect(root.left);
             connect(root.right);
@@ -23,4 +47,6 @@ public class Main {
             subtreesConnect(leftNode.right, rightNode.left);
         }
     }
+
+     */
 }
