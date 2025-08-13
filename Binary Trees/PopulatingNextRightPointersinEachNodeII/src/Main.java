@@ -3,10 +3,57 @@ public class Main {
 
     }
 
+    public Node connect(Node root) {
+        if(root == null) return null;
+
+        Node current = root;
+        Node next = null;
+        Node previous = null;
+
+        while(current != null){
+            if(current.left != null) next = current.left;
+            else if(current.left == null && current.right == null && current.next != null){
+                current = current.next;
+                while(current.next != null && current.left == null && current.right == null){
+                    current = current.next;
+                }
+                if(current.left != null) next = current.left;
+                else next = current.right;
+            }
+            else next = current.right;
+
+            if(current.left != null || current.right != null){
+                while(current != null){
+                    if(previous != null){
+                        if(previous.right != null){
+                            if(current.left != null) previous.right.next = current.left;
+                            else if(current.right != null) previous.right.next = current.right;
+                        }
+                        else if(previous.left != null){
+                            if(current.left != null) previous.left.next = current.left;
+                            else if(current.right != null) previous.left.next = current.right;
+                        }
+                    }
+                    if(current.left != null) {
+                        current.left.next = current.right;
+                        previous = current;
+                    }
+                    else if(current.right != null) previous = current;
+                    current = current.next;
+                }
+            }
+            previous = null;
+            current = next;
+        }
+
+        return root;
+    }
+
     // Both solutions are slow and inefficient
 
     // private int reachedLevel = 0;
 
+    /*
     public Node connect(Node root) {
         if(root == null) return null;
 
@@ -43,7 +90,6 @@ public class Main {
 
     }
 
-    /*
     private void subtreesConnect(Node leftNode, Node rightNode, int currentLevel){
 
         boolean inwards = false;
