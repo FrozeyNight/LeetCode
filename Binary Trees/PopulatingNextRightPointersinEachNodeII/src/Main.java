@@ -7,16 +7,15 @@ public class Main {
         if(root == null) return null;
 
         Node current = root;
-        Node next = null;
+        Node next;
         Node previous = null;
 
         while(current != null){
             if(current.left != null) next = current.left;
-            else if(current.left == null && current.right == null && current.next != null){
-                current = current.next;
-                while(current.next != null && current.left == null && current.right == null){
+            else if(current.right == null && current.next != null){
+                do {
                     current = current.next;
-                }
+                } while (current.next != null && current.left == null && current.right == null);
                 if(current.left != null) next = current.left;
                 else next = current.right;
             }
