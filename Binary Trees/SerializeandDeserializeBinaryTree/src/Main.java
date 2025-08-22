@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,10 +7,67 @@ public class Main {
         root.right = new TreeNode(3);
 
         String test = "2 1 3 I 1 2 3 I3";
-        TreeNode test2 = deserialize(test);
-
-        System.out.println("Check");
+        //TreeNode test2 = deserialize(test);
+        serialize(root);
     }
+
+    // Encodes a tree to a single string.
+    public static String serialize(TreeNode root) {
+        if(root == null) return null;
+        StringBuilder serializedTreeBuilder = new StringBuilder();
+
+        Queue<TreeNode> BFS = new ArrayDeque<>();
+        Queue<TreeNode> BFSHelp = new ArrayDeque<>();
+        BFS.add(root);
+
+        TreeNode temp;
+        int levelCounter = 0;
+        while (!BFS.isEmpty()){
+            temp = BFS.poll();
+
+            serializedTreeBuilder.append(temp.val);
+            serializedTreeBuilder.append(',');
+            if(temp.left != null || temp.right != null){
+                if(temp.left != null && temp.right != null){
+                    serializedTreeBuilder.append('3');
+                    BFSHelp.add(temp.left);
+                    BFSHelp.add(temp.right);
+                }
+                else if(temp.left != null){
+                    serializedTreeBuilder.append('1');
+                    BFSHelp.add(temp.left);
+                }
+                else{
+                    serializedTreeBuilder.append('2');
+                    BFSHelp.add(temp.right);
+                }
+            }
+            else serializedTreeBuilder.append('0');
+
+            if(!BFS.isEmpty()) serializedTreeBuilder.append('|');
+            else{
+                serializedTreeBuilder.append('I');
+                BFS.addAll(BFSHelp);
+                BFSHelp.clear();
+                levelCounter++;
+            }
+
+        }
+
+        serializedTreeBuilder.append(levelCounter);
+        System.out.println(serializedTreeBuilder);
+
+        return String.valueOf(serializedTreeBuilder);
+    }
+
+    // Decodes your encoded data to tree.
+    public static TreeNode deserialize(String data) {
+        return null;
+    }
+
+
+
+    /*
 
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -85,8 +139,8 @@ public class Main {
     private void preorderTraverse(TreeNode root, List<Integer> preorder){
         if(root == null) return;
         preorder.add(root.val);
-        inorderTraverse(root.left, preorder);
-        inorderTraverse(root.right, preorder);
+        preorderTraverse(root.left, preorder);
+        preorderTraverse(root.right, preorder);
     }
 
     private static int preorderIndex = 1;
@@ -123,4 +177,6 @@ public class Main {
             buildTreeHelper(node.right, mappedInorder, preorder, rightStart, end);
         }
     }
+
+     */
 }
