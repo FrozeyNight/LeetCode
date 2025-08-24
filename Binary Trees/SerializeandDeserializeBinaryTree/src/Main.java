@@ -20,38 +20,38 @@ public class Main {
         serializedTreeBuilder.append('I');
 
         Queue<TreeNode> BFS = new ArrayDeque<>();
-        Queue<TreeNode> BFSHelp = new ArrayDeque<>();
+        int levelLength = 1;
         BFS.add(root);
 
         TreeNode temp;
         int levelCounter = 0;
         while (!BFS.isEmpty()){
             temp = BFS.poll();
+            levelLength--;
 
             serializedTreeBuilder.append(temp.val);
             serializedTreeBuilder.append(',');
             if(temp.left != null || temp.right != null){
                 if(temp.left != null && temp.right != null){
                     serializedTreeBuilder.append('3');
-                    BFSHelp.add(temp.left);
-                    BFSHelp.add(temp.right);
+                    BFS.add(temp.left);
+                    BFS.add(temp.right);
                 }
                 else if(temp.left != null){
                     serializedTreeBuilder.append('1');
-                    BFSHelp.add(temp.left);
+                    BFS.add(temp.left);
                 }
                 else{
                     serializedTreeBuilder.append('2');
-                    BFSHelp.add(temp.right);
+                    BFS.add(temp.right);
                 }
             }
             else serializedTreeBuilder.append('0');
 
             serializedTreeBuilder.append('T');
-            if(BFS.isEmpty()){
+            if(levelLength == 0){
                 serializedTreeBuilder.append('I');
-                BFS.addAll(BFSHelp);
-                BFSHelp.clear();
+                levelLength = BFS.size();
                 levelCounter++;
             }
 
@@ -70,9 +70,7 @@ public class Main {
         int amountOfLevels = Integer.parseInt(data.split("I")[0]);
         String allLevels = data.substring(data.indexOf('I') + 1);
 
-        String[] levels = new String[amountOfLevels];
-
-        System.arraycopy(allLevels.split("I"), 0, levels, 0, amountOfLevels);
+        String[] levels = allLevels.split("I");
 
         TreeNode root = new TreeNode(Integer.parseInt(levels[0].split(",")[0]));
         Queue<TreeNode> BFS = new ArrayDeque<>();
@@ -92,14 +90,14 @@ public class Main {
                 if(level == amountOfLevels - 1) break;
                 nextLevelCopy = levels[level + 1];
             }
-            amountOfChildren = Integer.parseInt(levels[level].split("T")[0].split(",")[1]);
+            amountOfChildren = Integer.parseInt(levels[level].substring(levels[level].indexOf(",") + 1, levels[level].indexOf("T")));
             if(amountOfChildren == 1 || amountOfChildren == 3){
-                temp.left = new TreeNode(Integer.parseInt(nextLevelCopy.split("T")[0].split(",")[0]));
+                temp.left = new TreeNode(Integer.parseInt(nextLevelCopy.substring(0, nextLevelCopy.indexOf(","))));
                 BFS.add(temp.left);
                 nextLevelCopy = nextLevelCopy.substring(nextLevelCopy.indexOf("T") + 1);
             }
             if(amountOfChildren == 2 || amountOfChildren == 3){
-                temp.right = new TreeNode(Integer.parseInt(nextLevelCopy.split("T")[0].split(",")[0]));
+                temp.right = new TreeNode(Integer.parseInt(nextLevelCopy.substring(0, nextLevelCopy.indexOf(","))));
                 BFS.add(temp.right);
                 nextLevelCopy = nextLevelCopy.substring(nextLevelCopy.indexOf("T") + 1);
             }
