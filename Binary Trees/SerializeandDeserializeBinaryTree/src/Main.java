@@ -16,8 +16,10 @@ public class Main {
     // Encodes a tree to a single string.
     public static String serialize(TreeNode root) {
         if(root == null) return null;
-        StringBuilder serializedTreeBuilder = new StringBuilder();
-        serializedTreeBuilder.append('I');
+        StringBuilder serializedTreeNodeValuesBuilder = new StringBuilder();
+        StringBuilder serializedTreeChildrenAmountBuilder = new StringBuilder();
+        serializedTreeNodeValuesBuilder.append('I');
+        serializedTreeChildrenAmountBuilder.append('I');
 
         Queue<TreeNode> BFS = new ArrayDeque<>();
         int levelLength = 1;
@@ -29,38 +31,42 @@ public class Main {
             temp = BFS.poll();
             levelLength--;
 
-            serializedTreeBuilder.append(temp.val);
-            serializedTreeBuilder.append(',');
+            serializedTreeNodeValuesBuilder.append(temp.val);
             if(temp.left != null || temp.right != null){
                 if(temp.left != null && temp.right != null){
-                    serializedTreeBuilder.append('3');
+                    serializedTreeChildrenAmountBuilder.append('3');
                     BFS.add(temp.left);
                     BFS.add(temp.right);
                 }
                 else if(temp.left != null){
-                    serializedTreeBuilder.append('1');
+                    serializedTreeChildrenAmountBuilder.append('1');
                     BFS.add(temp.left);
                 }
                 else{
-                    serializedTreeBuilder.append('2');
+                    serializedTreeChildrenAmountBuilder.append('2');
                     BFS.add(temp.right);
                 }
             }
-            else serializedTreeBuilder.append('0');
-
-            serializedTreeBuilder.append('T');
+            else serializedTreeChildrenAmountBuilder.append('0');
             if(levelLength == 0){
-                serializedTreeBuilder.append('I');
+                serializedTreeNodeValuesBuilder.append('I');
+                serializedTreeChildrenAmountBuilder.append('I');
                 levelLength = BFS.size();
                 levelCounter++;
+            }
+            else{
+                serializedTreeNodeValuesBuilder.append(',');
+                serializedTreeChildrenAmountBuilder.append(',');
             }
 
         }
 
-        serializedTreeBuilder.deleteCharAt(serializedTreeBuilder.length() - 1);
-        serializedTreeBuilder.insert(0, levelCounter);
+        serializedTreeNodeValuesBuilder.deleteCharAt(serializedTreeNodeValuesBuilder.length() - 1);
+        serializedTreeNodeValuesBuilder.insert(0, levelCounter);
+        serializedTreeNodeValuesBuilder.append(" ");
+        serializedTreeNodeValuesBuilder.append(serializedTreeChildrenAmountBuilder);
 
-        return String.valueOf(serializedTreeBuilder);
+        return String.valueOf(serializedTreeNodeValuesBuilder);
     }
 
     // Decodes your encoded data to tree.
@@ -68,45 +74,65 @@ public class Main {
         if(data == null) return null;
 
         int amountOfLevels = Integer.parseInt(data.split("I")[0]);
-        String allLevels = data.substring(data.indexOf('I') + 1);
+        int valueAndChildrenSeparator = data.indexOf(" ");
+        String allNodeValues = data.substring(data.indexOf('I') + 1, valueAndChildrenSeparator);
+        String allNodeChildrenAmounts = data.substring(valueAndChildrenSeparator + 2);
 
-        String[] levels = allLevels.split("I");
+        String[] nodeValuesLevels = allNodeValues.split("I");
+        int[][] nodeValues = new int[amountOfLevels][];
+        String[] nodeChildrenAmountLevels = allNodeChildrenAmounts.split("I");
+        int[][] childrenAmounts = new int[amountOfLevels][];
 
-        TreeNode root = new TreeNode(Integer.parseInt(levels[0].split(",")[0]));
+        String[] holder;
+        String[] holder2;
+        for (int i = 0; i < nodeValuesLevels.length; i++) {
+            holder = nodeValuesLevels[i].split(",");
+            holder2 = nodeChildrenAmountLevels[i].split(",");
+            nodeValues[i] = new int[holder.length];
+            childrenAmounts[i] = new int[holder2.length];
+            for (int j = 0; j < holder.length; j++) {
+                nodeValues[i][j] = Integer.parseInt(holder[j]);
+                childrenAmounts[i][j] = Integer.parseInt(holder2[j]);
+            }
+        }
+
+        TreeNode root = new TreeNode(nodeValues[0][0]);
         Queue<TreeNode> BFS = new ArrayDeque<>();
         BFS.add(root);
 
-        int amountOfChildren = 0;
         TreeNode temp;
         int level = 0;
-        String nextLevelCopy;
-        if(amountOfLevels > 1) nextLevelCopy = levels[1];
-        else return root;
+        int nodeIndexInLevel = 0;
+        int nodeIndexInNextLevel = 0;
+        int amountOfChildren;
+        if(amountOfLevels == 1) return root;
         while (true){
             temp = BFS.poll();
 
-            if(levels[level].isEmpty()){
+            if(nodeIndexInLevel == nodeValues[level].length){
                 level++;
+                nodeIndexInLevel = 0;
+                nodeIndexInNextLevel = 0;
                 if(level == amountOfLevels - 1) break;
-                nextLevelCopy = levels[level + 1];
             }
-            amountOfChildren = Integer.parseInt(levels[level].substring(levels[level].indexOf(",") + 1, levels[level].indexOf("T")));
+            amountOfChildren = childrenAmounts[level][nodeIndexInLevel];
             if(amountOfChildren == 1 || amountOfChildren == 3){
-                temp.left = new TreeNode(Integer.parseInt(nextLevelCopy.substring(0, nextLevelCopy.indexOf(","))));
+                temp.left = new TreeNode(nodeValues[level + 1][nodeIndexInNextLevel]);
                 BFS.add(temp.left);
-                nextLevelCopy = nextLevelCopy.substring(nextLevelCopy.indexOf("T") + 1);
+                nodeIndexInNextLevel++;
             }
             if(amountOfChildren == 2 || amountOfChildren == 3){
-                temp.right = new TreeNode(Integer.parseInt(nextLevelCopy.substring(0, nextLevelCopy.indexOf(","))));
+                temp.right = new TreeNode(nodeValues[level + 1][nodeIndexInNextLevel]);
                 BFS.add(temp.right);
-                nextLevelCopy = nextLevelCopy.substring(nextLevelCopy.indexOf("T") + 1);
+                nodeIndexInNextLevel++;
             }
 
-            levels[level] = levels[level].substring(levels[level].indexOf("T") + 1);
+            nodeIndexInLevel++;
 
         }
 
         return root;
+
     }
 
 
