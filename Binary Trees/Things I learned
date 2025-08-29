@@ -1,0 +1,12 @@
+1. When you = an array or other non-primitive object e.g int[] ar1 = new int[1]; int[] ar2 = ar1; you give a reference to memeory, so if you do ar2[0] = 1; then ar1[0] will also be 1.
+
+2. Don't use global variables unless you have to. It's bad practice and makes it so that method can't run async.
+
+3. If you need to get the index of a value in an array multiple times, make a HashMap and map the array <value, indexInArray>, so instead of looking through the array multiple times, you simply look it up.
+
+4. Lists are pretty slow and memory inefficient, so use them only if you have to.
+
+5. Don't manualy implement functions that are already in the IDE. They might technically be faster, but will be way less readable and break easier.
+
+6. When thinking about a solution, sketch it out. Don't spend half and hour just trying to imagine it in your head - it's much easier to spot issues or improvements when you have an actual visual example.
+
