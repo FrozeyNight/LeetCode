@@ -10,7 +10,7 @@ public class Main {
         root.right.left = new TreeNode(6);
         root.right.right = new TreeNode(7);
 
-        System.out.println(serialize(root));
+        // checking integrity of the GitHub sync
         deserialize(serialize(root));
     }
 
