@@ -1,12 +1,17 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 public class Main {
     public static void main(String[] args){
-
+        Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
+        Node root = new Node(tree[0], new ArrayList<>());
+        testTreeBuilder(tree, root);
+        System.out.println(serialize(root));
     }
 
-    public String serialize(Node root) {
+    public static String serialize(Node root) {
         List<Integer> preorder = new ArrayList<>();
         if(root == null) return null;
         preorder.add(root.val);
@@ -21,7 +26,7 @@ public class Main {
         return String.valueOf(serializePreorder);
     }
 
-    private void traverse(List<Integer> preorder, Node node){
+    private static void traverse(List<Integer> preorder, Node node){
         if(node.children.isEmpty()) return;
 
         int amountOfChildren = node.children.size();
@@ -35,6 +40,30 @@ public class Main {
     }
 
     public Node deserialize(String data) {
+        return null;
+    }
 
+    private static void testTreeBuilder(Integer[] tree, Node root){
+        Queue<Node> BFBuild = new ArrayDeque<>();
+        BFBuild.add(root);
+        int treeLength = tree.length;
+
+        Node temp;
+        int index = 1;
+        while (!BFBuild.isEmpty()){
+            temp = BFBuild.poll();
+            index++;
+
+            if(tree[index] == null) continue;
+
+            int childIndex = 0;
+            for (int i = index; tree[i] != null ; i++) {
+                temp.children.add(new Node(tree[i], new ArrayList<>()));
+                BFBuild.add(temp.children.get(childIndex));
+                childIndex++;
+                index++;
+                if(index == treeLength) return;
+            }
+        }
     }
 }
