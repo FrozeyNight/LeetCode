@@ -57,6 +57,8 @@ public class Main {
         }
     }
 
+    //public static int preorderIndex = 1;
+
     public static Node deserialize(String data) {
         if(data == null) return null;
 
@@ -67,9 +69,41 @@ public class Main {
             if(preorderInString[i].equals("null")) continue;
             preorder[i] = Integer.parseInt(preorderInString[i]);
         }
+        /*
+        Node root = new Node(preorder[0], new ArrayList<>());
 
+        if(preorder[preorderIndex] == null) return root;
+        Node temp;
+
+        while (preorderIndex < preorder.length){
+            temp = new Node(preorder[preorderIndex], new ArrayList<>());
+            root.children.add(temp);
+            preorderIndex++;
+            buildTree(temp, preorder);
+            preorderIndex++;
+        }
+
+        return root;
+
+         */
         return null;
     }
+
+    /*
+
+    public static void buildTree(Node node, Integer[] preorder){
+        if(preorder[preorderIndex] == null) return;
+        Node temp;
+
+        while (preorder[preorderIndex] != null){
+            temp = new Node(preorder[preorderIndex], new ArrayList<>());
+            node.children.add(temp);
+            preorderIndex++;
+            buildTree(temp, preorder);
+        }
+    }
+
+     */
 
     private static void testTreeBuilder(Integer[] tree, Node root){
         Queue<Node> BFBuild = new ArrayDeque<>();
