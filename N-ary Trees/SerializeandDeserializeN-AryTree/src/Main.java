@@ -5,11 +5,14 @@ import java.util.Queue;
 
 public class Main {
     public static void main(String[] args){
-        Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
+        //Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
+        Integer[] tree = new Integer[]{1,null,2,3,4,null,null,5,null,null,null,6};
         Node root = new Node(tree[0], new ArrayList<>());
+        //Node root = new Node(0, new ArrayList<>());
         testTreeBuilder(tree, root);
         System.out.println(serialize(root));
-        deserialize(serialize(root));
+        Node check = deserialize(serialize(root));
+        System.out.println(check);
     }
 
     public static String serialize(Node root) {
@@ -26,10 +29,11 @@ public class Main {
         for (int i = 0; i < amountOfChildren; i++) {
             preorder.add(root.children.get(i).val);
             traverse(preorder, root.children.get(i));
-            preorder.add(null);
+            //preorder.add(null);
         }
 
-        if(preorder.size() > 2) preorder = preorder.subList(0, preorder.size() - 2);
+        //if(preorder.size() > 2) preorder = preorder.subList(0, preorder.size() - 2);
+        preorder.add(null);
 
         StringBuilder serializePreorder = new StringBuilder();
 
@@ -55,9 +59,11 @@ public class Main {
             preorder.add(node.children.get(i).val);
             traverse(preorder, node.children.get(i));
         }
+
+        preorder.add(null);
     }
 
-    //public static int preorderIndex = 1;
+    public static int preorderIndex = 1;
 
     public static Node deserialize(String data) {
         if(data == null) return null;
@@ -69,30 +75,19 @@ public class Main {
             if(preorderInString[i].equals("null")) continue;
             preorder[i] = Integer.parseInt(preorderInString[i]);
         }
-        /*
+
         Node root = new Node(preorder[0], new ArrayList<>());
-
-        if(preorder[preorderIndex] == null) return root;
-        Node temp;
-
-        while (preorderIndex < preorder.length){
-            temp = new Node(preorder[preorderIndex], new ArrayList<>());
-            root.children.add(temp);
-            preorderIndex++;
-            buildTree(temp, preorder);
-            preorderIndex++;
-        }
+        buildTree(root, preorder);
 
         return root;
-
-         */
-        return null;
     }
 
-    /*
 
     public static void buildTree(Node node, Integer[] preorder){
-        if(preorder[preorderIndex] == null) return;
+        if(preorder[preorderIndex] == null) {
+            preorderIndex++;
+            return;
+        }
         Node temp;
 
         while (preorder[preorderIndex] != null){
@@ -101,17 +96,19 @@ public class Main {
             preorderIndex++;
             buildTree(temp, preorder);
         }
+        preorderIndex++;
     }
 
-     */
-
     private static void testTreeBuilder(Integer[] tree, Node root){
+        if(tree.length == 0) return;
+
         Queue<Node> BFBuild = new ArrayDeque<>();
         BFBuild.add(root);
         int treeLength = tree.length;
 
         Node temp;
         int index = 1;
+        if(index == treeLength) return;
         while (!BFBuild.isEmpty()){
             temp = BFBuild.poll();
             index++;
