@@ -5,14 +5,11 @@ import java.util.Queue;
 
 public class Main {
     public static void main(String[] args){
-        //Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
-        Integer[] tree = new Integer[]{1,null,2,3,4,null,null,5,null,null,null,6};
+        Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
         Node root = new Node(tree[0], new ArrayList<>());
-        //Node root = new Node(0, new ArrayList<>());
         testTreeBuilder(tree, root);
-        System.out.println(serialize(root));
-        Node check = deserialize(serialize(root));
-        System.out.println(check);
+        deserialize(serialize(root));
+        System.out.println(BFSSerialize(root));
     }
 
     public static String serialize(Node root) {
@@ -29,10 +26,8 @@ public class Main {
         for (int i = 0; i < amountOfChildren; i++) {
             preorder.add(root.children.get(i).val);
             traverse(preorder, root.children.get(i));
-            //preorder.add(null);
         }
 
-        //if(preorder.size() > 2) preorder = preorder.subList(0, preorder.size() - 2);
         preorder.add(null);
 
         StringBuilder serializePreorder = new StringBuilder();
@@ -67,6 +62,7 @@ public class Main {
 
     public static Node deserialize(String data) {
         if(data == null) return null;
+        preorderIndex = 1;
 
         String[] preorderInString = data.split(",");
         int arrLen = preorderInString.length;
@@ -97,6 +93,45 @@ public class Main {
             buildTree(temp, preorder);
         }
         preorderIndex++;
+    }
+
+    private static String BFSSerialize(Node root){
+        if(root == null) return null;
+        else if (root.children.isEmpty()) return String.valueOf(root.val);
+
+        StringBuilder serializedTree = new StringBuilder();
+        Queue<Node> BFS = new ArrayDeque<>();
+        BFS.add(root);
+
+        serializedTree.append(root.val);
+        serializedTree.append(',');
+        serializedTree.append("null");
+        serializedTree.append(',');
+
+        Node temp;
+        int lastValue = 0;
+        while (!BFS.isEmpty()){
+            temp = BFS.poll();
+
+            for (Node child : temp.children){
+                BFS.add(child);
+                serializedTree.append(child.val);
+                lastValue = child.val;
+                serializedTree.append(',');
+            }
+
+            serializedTree.append("null");
+            serializedTree.append(',');
+        }
+
+        int lastValueLength = 0;
+        int tmp = lastValue;
+        while (tmp > 0){
+            tmp = tmp / 10;
+            lastValueLength++;
+        }
+
+        return serializedTree.substring(0, serializedTree.indexOf(String.valueOf(lastValue)) + lastValueLength);
     }
 
     private static void testTreeBuilder(Integer[] tree, Node root){
