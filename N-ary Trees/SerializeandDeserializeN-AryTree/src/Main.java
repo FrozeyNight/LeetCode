@@ -8,8 +8,8 @@ public class Main {
         Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
         Node root = new Node(tree[0], new ArrayList<>());
         testTreeBuilder(tree, root);
-        deserialize(serialize(root));
-        System.out.println(BFSSerialize(root));
+        Node check = deserialize(serialize(root));
+        Node check2 = BFSDeserialize(BFSSerialize(root));
     }
 
     public static String serialize(Node root) {
@@ -131,7 +131,25 @@ public class Main {
             lastValueLength++;
         }
 
-        return serializedTree.substring(0, serializedTree.indexOf(String.valueOf(lastValue)) + lastValueLength);
+        return serializedTree.substring(0, serializedTree.lastIndexOf(String.valueOf(lastValue)) + lastValueLength);
+    }
+
+    private static Node BFSDeserialize(String data){
+        if(data.isEmpty()) return null;
+
+        String[] leveloOderInString = data.split(",");
+        int arrLen = leveloOderInString.length;
+        Integer[] levelOrder = new Integer[arrLen];
+        for (int i = 0; i < arrLen; i++) {
+            if(leveloOderInString[i].equals("null")) continue;
+            levelOrder[i] = Integer.parseInt(leveloOderInString[i]);
+        }
+
+        Node root = new Node(levelOrder[0], new ArrayList<>());
+
+        testTreeBuilder(levelOrder, root);
+
+        return root;
     }
 
     private static void testTreeBuilder(Integer[] tree, Node root){
