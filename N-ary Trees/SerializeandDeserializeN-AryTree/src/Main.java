@@ -8,8 +8,8 @@ public class Main {
         Integer[] tree = new Integer[]{1,null,2,3,4,5,null, null,6,7,null,8,null,9,10,null,null,11,null,12,null,13,null,null,14};
         Node root = new Node(tree[0], new ArrayList<>());
         testTreeBuilder(tree, root);
-        Node check = deserialize(serialize(root));
-        Node check2 = BFSDeserialize(BFSSerialize(root));
+        deserialize(serialize(root));
+        BFSDeserialize(BFSSerialize(root));
     }
 
     public static String serialize(Node root) {
